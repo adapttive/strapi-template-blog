@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_forms",
+  "info": {
+    "name": "ContactForm",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "email": {
+      "type": "string",
+      "required": true,
+      "regex": "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$"
+    },
+    "content": {
+      "type": "string"
+    },
+    "mobile": {
+      "type": "string",
+      "regex": "^[\\d \\+]*$",
+      "maxLength": 20,
+      "minLength": 6
+    },
+    "subject": {
+      "type": "string",
+      "maxLength": 300
+    }
+  }
+}

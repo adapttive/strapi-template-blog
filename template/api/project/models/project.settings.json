@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "name": "Project",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "authors": {
+      "collection": "author",
+      "via": "projects",
+      "dominant": true
+    },
+    "platforms": {
+      "via": "projects",
+      "collection": "platform"
+    }
+  }
+}

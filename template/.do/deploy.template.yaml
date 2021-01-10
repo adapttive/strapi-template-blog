@@ -1,0 +1,16 @@
+name: your-project-name
+region: nyc
+services:
+- build_command: yarn build
+  environment_slug: node-js
+  github:
+    branch: release
+    deploy_on_push: true
+    repo: github-org/your-project-name
+  http_port: 80
+  instance_count: 1
+  instance_size_slug: basic-xs
+  name: your-project-name
+  routes:
+  - path: /
+  run_command: yarn start

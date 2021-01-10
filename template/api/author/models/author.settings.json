@@ -1,0 +1,74 @@
+{
+  "kind": "collectionType",
+  "collectionName": "authors",
+  "info": {
+    "name": "Author",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "picture": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "email": {
+      "type": "string"
+    },
+    "linked_user": {
+      "unique": true,
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "articles": {
+      "via": "authors",
+      "collection": "article"
+    },
+    "github": {
+      "type": "string"
+    },
+    "twitter": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "intro": {
+      "type": "text"
+    },
+    "stackoverflow": {
+      "type": "string"
+    },
+    "linkedin": {
+      "type": "string"
+    },
+    "badges": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.badge"
+    },
+    "hireme": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.hireme"
+    },
+    "devto": {
+      "type": "string"
+    },
+    "projects": {
+      "via": "authors",
+      "collection": "project"
+    }
+  }
+}

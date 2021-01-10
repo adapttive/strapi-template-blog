@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_shared_hiremes",
+  "info": {
+    "name": "hireme",
+    "icon": "hammer",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "enable": {
+      "type": "boolean"
+    }
+  }
+}

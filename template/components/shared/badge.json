@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_badges",
+  "info": {
+    "name": "Badge",
+    "icon": "trophy",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}

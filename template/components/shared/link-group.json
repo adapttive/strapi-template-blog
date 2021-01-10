@@ -1,0 +1,18 @@
+{
+  "collectionName": "link_group",
+  "info": {
+    "name": "LinkGroup",
+    "icon": "align-justify"
+  },
+  "options": {},
+  "attributes": {
+    "links": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.link"
+    },
+    "label": {
+      "type": "string"
+    }
+  }
+}

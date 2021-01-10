@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/privacy-policy-page",
+      "handler": "privacy-policy-page.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/privacy-policy-page",
+      "handler": "privacy-policy-page.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/privacy-policy-page",
+      "handler": "privacy-policy-page.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

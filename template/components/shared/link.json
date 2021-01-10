@@ -1,0 +1,21 @@
+{
+  "collectionName": "link",
+  "info": {
+    "name": "Link",
+    "icon": "share-square",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,72 @@
+name: your-project-name auto deployment
+on:
+  push:
+    branches: [ release ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy nodejs app with pm2
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # install node
+            sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+            source $HOME/.bashrc
+            nvm install --lts
+            nvm use --lts
+            node -v
+
+            # install pm2 and yarn
+            sudo npm cache clean -f
+            sudo npm install pm2@latest -g
+            sudo npm install yarn -g
+
+            # navigate into the folder and pull/clone
+            if cd ${{secrets.CMS_APP_ROOT}}; then git fetch --all && git reset --hard origin/release && git pull origin release; else git clone "https://${{secrets.GIT_USERNAME}}:${{secrets.GIT_TOKEN}}@${{secrets.GIT_REPO}}" --branch release --single-branch "${{secrets.CMS_APP_ROOT}}"; fi
+
+            cd ${{secrets.CMS_APP_ROOT}}
+
+            # copy env config from github secrets
+            echo "DATABASE_HOST='${{secrets.DATABASE_HOST}}'" > .env
+            echo "DATABASE_SRV='${{secrets.DATABASE_SRV}}'" >> .env
+            echo "DATABASE_PORT='${{secrets.DATABASE_PORT}}'" >> .env
+            echo "DATABASE_USERNAME='${{secrets.DATABASE_USERNAME}}'" >> .env
+            echo "DATABASE_NAME='${{secrets.DATABASE_NAME}}'" >> .env
+            echo "DATABASE_PASSWORD='${{secrets.DATABASE_PASSWORD}}'" >> .env
+            echo "DATABASE_SSL='${{secrets.DATABASE_SSL}}'" >> .env
+            echo "PROVIDER_CLOUD_NAME='${{secrets.PROVIDER_CLOUD_NAME}}'" >> .env
+            echo "PROVIDER_API_KEY='${{secrets.PROVIDER_API_KEY}}'" >> .env
+            echo "PROVIDER_API_SECRET='${{secrets.PROVIDER_API_SECRET}}'" >> .env
+            echo "CLOUDINARY_URL='${{secrets.CLOUDINARY_URL}}'" >> .env
+            echo "CMS_APP_ROOT='${{secrets.CMS_APP_ROOT}}'" >> .env
+            echo "URL='${{secrets.URL}}'" >> .env
+            echo "URL_ADMIN='${{secrets.URL_ADMIN}}'" >> .env
+            echo "ADMIN_URL='${{secrets.ADMIN_URL}}'" >> .env
+            echo "SQREEN_ENABLE='${{secrets.SQREEN_ENABLE}}'" >> .env
+            echo "SQREEN_APP_NAME='${{secrets.SQREEN_APP_NAME}}'" >> .env
+            echo "SQREEN_TOKEN='${{secrets.SQREEN_TOKEN}}'" >> .env
+            echo "RECAPTCHA_VERIFY_URL='${{secrets.RECAPTCHA_VERIFY_URL}}'" >> .env
+            echo "RECAPTCHA_SITE_KEY='${{secrets.RECAPTCHA_SITE_KEY}}'" >> .env
+            echo "RECAPTCHA_SECRET_KEY='${{secrets.RECAPTCHA_SECRET_KEY}}'" >> .env
+            echo "AWS_SES_ENABLE='${{secrets.AWS_SES_ENABLE}}'" >> .env
+            echo "AWS_SES_URL='${{secrets.AWS_SES_URL}}'" >> .env
+            echo "AWS_SES_KEY='${{secrets.AWS_SES_KEY}}'" >> .env
+            echo "AWS_SES_SECRET='${{secrets.AWS_SES_SECRET}}'" >> .env
+            echo "AWS_SES_REPLY_TO_EMAIL='${{secrets.AWS_SES_REPLY_TO_EMAIL}}'" >> .env
+            echo "AWS_SES_FROM_EMAIL='${{secrets.AWS_SES_FROM_EMAIL}}'" >> .env
+            echo "ADMIN_EMAIL='${{secrets.ADMIN_EMAIL}}'" >> .env
+            export NODE_OPTIONS=--max_old_space_size=4096
+            rm -rf .cache
+            rm -rf build
+            yarn install # install dependencies
+            yarn build --clean # build strapi
+            pm2 stop ecosystem.config.js --env production  # stop the pm2 service.
+            pm2 update
+            pm2 start ecosystem.config.js --env production
+
+            sudo service nginx restart
